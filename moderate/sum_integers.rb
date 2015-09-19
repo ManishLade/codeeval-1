@@ -1,3 +1,6 @@
+#Write a program to determine the largest sum of 
+#contiguous integers in a list.
+
 # Implementation of the Kadane's algorithm
 def max_sub_array(array)
   max_ending_here = array[0]

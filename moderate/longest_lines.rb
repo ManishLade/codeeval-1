@@ -1,3 +1,6 @@
+# Write a program which reads a file and prints to stdout the specified
+# number of the longest lines that are sorted based on their length in descending order.
+
 def partial_quick_sort(arr, i, j, k)
   if i < j
     index_pivot = rand(i..j)
@@ -10,9 +13,8 @@ def partial_quick_sort(arr, i, j, k)
     partial_quick_sort(arr, index + 1, j, k) if index < k - 1
   end
 end
-res = []
 lines = File.open(ARGV[0])
 size = lines.first.to_i
 arr = lines.readlines.map(&:strip)
-res = partial_quick_sort(arr, 0, arr.size - 1, size)
+partial_quick_sort(arr, 0, arr.size - 1, size)
 puts arr.first(size)
