@@ -1,26 +1,6 @@
-# While working for the police, you've identified a house where
-# people go to commit crimes, called Crime House.
-# One day, you set up a camera over the door of the house and record a video.
-
-# You don't know how many people were in Crime House at the start of the day,
-# but you can see people enter and leave through the front door.
-# Unfortunately, because the people entering and leaving Crime House are criminals,
-# sometimes they wear masks;
-# and you aren't quite sure if the front door is the only way in or out.
-
-# Sometimes you can guess who was wearing a mask.
-# If criminal #5 entered the house, then someone wearing a mask left,
-# then criminal #5 entered the house again, then either the
-# person wearing the mask was criminal #5,
-# or there is another way out of Crime House.
-
-# At the end of the day, when Crime House has closed
-# its doors for the night, you watch your video.
-# Because you're an optimist, you want to figure out if it's possible
-# that there are no other entrances or exits from crime house;
-# and if so, you want to figure out the minimum number of people
-# who could be in Crime House at the end of the day.
 class CrimeError < StandardError
+end
+class InputError < StandardError
 end
 def unbreak_moves(hash, move_type)
   selector = get_opposite_move_type(move_type)
@@ -53,15 +33,20 @@ def update_move_count(move_type, count)
   [0, count + operation].max
 end
 
+count = File.foreach(ARGV[0]).inject(0) { |c, _line| c + 1 }
+fail InputError, 'too many test cases' if count > 20
 lines = File.open(ARGV[0])
 lines.each_line do |line|
   moves_hash = {}
   count = 0
   begin
     stream = line.split(';')
+    fail InputError, 'too many events' if stream[0].to_i > 15
+    fail InputError, 'there must be at least one event' if stream[0].to_i < 1
     moves = stream[1].split('|')
     moves.each do |raw_move|
       move = raw_move.split(' ')
+      fail InputError, 'id cannot be greater than 2000' if move[1].to_i > 2000
       if move[1] == '0'
         unbreak_moves(moves_hash, move[0])
       else
